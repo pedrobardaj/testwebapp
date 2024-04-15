@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Minimalist Website</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background-color: #ffffff; /* White background */
+    }
+    
+    .container {
+        padding: 20px;
+        text-align: center; /* Center align content */
+        position: relative; /* Set position to relative */
+    }
+    
+    .menu {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        z-index: 9999;
+        cursor: pointer;
+        color: #000000;
+    }
+    
+    .side-menu {
+        position: fixed;
+        top: 0;
+        left: -250px;
+        width: 250px;
+        height: 100%;
+        background-color: #f0f0f0; /* Light grey background */
+        border-top-right-radius: 20px; /* Apple-style rounded corners */
+        border-bottom-right-radius: 20px; /* Apple-style rounded corners */
+        transition: left 0.3s ease, box-shadow 0.3s ease; /* Added box-shadow transition */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Added subtle shadow effect */
+    }
+    
+    .menu-open {
+        left: 0;
+    }
+    
+    .menu-items {
+        padding: 20px;
+    }
+    
+    .menu-items button {
+        display: block;
+        width: 100%;
+        padding: 10px 0;
+        margin-bottom: 10px;
+        border: none;
+        border-radius: 10px; /* Apple-style rounded corners */
+        background-color: #ffffff; /* White background */
+        cursor: pointer;
+        font-size: 16px;
+    }
+    
+    .box-container {
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        width: calc(100% - 40px);
+        display: flex;
+        align-items: center;
+        transition: left 0.3s ease; /* Added left transition */
+    }
+    
+    .input-box {
+        flex: 1;
+        padding: 10px;
+        border-radius: 20px;
+        border: 1px solid #aaaaaa;
+        outline: none;
+        font-size: 16px;
+        transition: margin-left 0.3s ease, width 0.3s ease;
+    }
+    
+    .send-button {
+        padding: 10px 20px;
+        border-radius: 20px;
+        background-color: #000000;
+        color: #ffffff;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        margin-left: 10px;
+    }
+    
+    .menu-hidden .input-box {
+        margin-left: 0;
+        width: calc(100% - 40px);
+    }
+    
+    .menu-hidden .box-container {
+        left: 20px;
+    }
+    
+    .menu-open .box-container {
+        left: 270px; /* Adjusted position when menu is open */
+    }
+    
+    .logo {
+        position: absolute;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 9998; /* Ensure logo is below menu */
+    }
+    
+    /* Style for the message container */
+    .message-container {
+        margin-top: 20px;
+        text-align: left; /* Align messages to the left */
+        padding-left: 20px; /* Add some padding to the left */
+    }
+    
+    .message {
+        border: 1px solid #cccccc;
+        border-radius: 20px;
+        padding: 10px 20px;
+        margin-bottom: 10px;
+        max-width: 80%;
+        word-wrap: break-word; /* Ensure long messages wrap */
+        position: relative; /* Required for the favorite button positioning */
+    }
+
+    .favorite-button {
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        outline: none;
+    }
+
+    .favorite-button i {
+        color: #000000; /* Twitter heart color */
+        font-size: 18px;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Website Logo 
+    <img src="logo.png" alt="ClipCuote Logo" class="logo" -->
+    
+    <!-- Menu Button -->
+    <div class="menu" onclick="toggleMenu()">☰ Menu</div>
+    
+    <!-- Main Content -->
+    <h1>ClipCuote</h1>
+    <p>This is a simple and minimalist website with a white background.</p>
+</div>
+
+<!-- Side Menu -->
+<div class="side-menu" id="sideMenu">
+    <div class="menu-items">
+        <button>Profile</button>
+        <button>Premium</button>
+        <button>Dark Mode</button>
+    </div>
+</div>
+
+<!-- Message Container -->
+<div class="message-container" id="messageContainer">
+    <!-- Messages will be appended here -->
+</div>
+
+<!-- Box at the bottom with send button -->
+<div class="box-container" id="boxContainer">
+    <input type="text" class="input-box" id="messageInput" placeholder="Type your message...">
+    <button class="send-button" onclick="sendMessage()">Send</button>
+</div>
+
+<script>
+function toggleMenu() {
+    var sideMenu = document.getElementById('sideMenu');
+    sideMenu.classList.toggle('menu-open');
+    
+    var boxContainer = document.getElementById('boxContainer');
+    boxContainer.classList.toggle('menu-hidden');
+    
+    var menuButton = document.querySelector('.menu');
+    menuButton.style.display = 'none'; // Hide the menu button
+    
+    var inputBox = document.querySelector('.input-box');
+    var sendButton = document.querySelector('.send-button');
+    
+    if (sideMenu.classList.contains('menu-open')) {
+        inputBox.style.display = 'none';
+        sendButton.style.display = 'none';
+    } else {
+        inputBox.style.display = 'block';
+        sendButton.style.display = 'block';
+    }
+}
+
+document.addEventListener('click', function(event) {
+    var sideMenu = document.getElementById('sideMenu');
+    var boxContainer = document.getElementById('boxContainer');
+    var menuButton = document.querySelector('.menu');
+    var inputBox = document.querySelector('.input-box');
+    var sendButton = document.querySelector('.send-button');
+    
+    if (!sideMenu.contains(event.target) && event.target !== menuButton) {
+        sideMenu.classList.remove('menu-open');
+        boxContainer.classList.remove('menu-hidden');
+        menuButton.style.display = 'block'; // Show the menu button
+        inputBox.style.display = 'block'; // Show the input box
+        sendButton.style.display = 'block'; // Show the send button
+    }
+});
+
+function sendMessage() {
+    var messageInput = document.getElementById('messageInput');
+    var messageText = messageInput.value.trim();
+    
+    if (messageText !== '') {
+        var messageContainer = document.getElementById('messageContainer');
+        var messageDiv = document.createElement('div');
+        messageDiv.classList.add('message');
+        messageDiv.innerHTML = `
+            ${messageText}
+            <button class="favorite-button" onclick="toggleFavorite(this)">
+                <i class="far fa-heart"></i>
+            </button>
+        `;
+        messageContainer.appendChild(messageDiv);
+        
+        // Clear the input after sending message
+        messageInput.value = '';
+    }
+}
+
+function toggleFavorite(button) {
+    button.querySelector('i').classList.toggle('fas'); // Toggle filled heart icon
+}
+</script>
+
+</body>
+</html>
